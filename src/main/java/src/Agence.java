@@ -3,7 +3,7 @@ package src;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Agence extends Emprunteur {
+public class Agence extends Emprunteur implements Comparable<Agence> {
 	private List<Employe> employes;
 	private String nom;
 	
@@ -24,5 +24,22 @@ public class Agence extends Emprunteur {
 	}
 	public void setNom(String nom) {
 		this.nom = nom;
+	}
+	
+	public int nombreDefectueux()
+	{
+		int defectueux = 0;
+		for(Empruntable materiel : stock)
+		{
+			if(materiel.isDefectueux())
+			{
+				defectueux++;
+			}
+		}
+		return defectueux;
+	}
+
+	public int compareTo(Agence o) {
+		return Integer.compare(this.nombreDefectueux(), o.nombreDefectueux());
 	}
 }
