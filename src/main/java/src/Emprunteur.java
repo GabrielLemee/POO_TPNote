@@ -1,10 +1,15 @@
 package src;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Emprunteur {
-	private List<Empruntable> stock;
+	public List<Empruntable> stock;
 	
+	public Emprunteur()
+	{
+		stock = new ArrayList<Empruntable>();
+	}
 	
 	public void ajouterAuStock(Empruntable materiel)
 	{
@@ -18,7 +23,6 @@ public class Emprunteur {
 	
 	public boolean perdreMateriel(Empruntable materiel)
 	{
-		//TODO
-		return true;
+		return stock.remove(materiel);
 	}
 }

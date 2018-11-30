@@ -1,5 +1,6 @@
 package src;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Administrateur extends Employe{
@@ -22,6 +23,7 @@ public class Administrateur extends Employe{
 		return true;
 	}
 	
+	
 	public List<Empruntable> stockEmploye(Employe employe)
 	{
 		return employe.listeMateriel();
@@ -29,14 +31,27 @@ public class Administrateur extends Employe{
 	
 	public List<Empruntable> stockEntreprise()
 	{
+		List<Empruntable> stockEntreprise = new ArrayList<Empruntable>();
+		stockEntreprise.addAll(entreprise.listeMateriel());
 		
-		return entreprise.listeMateriel();
+		for(Agence agence : entreprise.getAgences())
+		{
+			stockEntreprise.addAll(stockAgence(agence));
+		}
+		
+		return stockEntreprise;
 	}
 	
-	public List<Empruntable> stockAgence()
+	public List<Empruntable> stockAgence(Agence agence)
 	{
-		List<Empruntable> stockAgence = new List<Empruntable>();
-		return agence.listeMateriel();
+		List<Empruntable> stockAgence = new ArrayList<Empruntable>();
+		stockAgence.addAll(agence.listeMateriel());
+		
+		for(Employe employe : agence.getEmployes())
+		{
+			stockAgence.addAll( employe.listeMateriel());
+		}
+		return stockAgence;
 	}
 	
 	public void transfererMateriel(Emprunteur actuelEmprunteur, Empruntable materiel, Emprunteur nvEmprunteur)
@@ -54,7 +69,7 @@ public class Administrateur extends Employe{
 		
 	}
 	
-	public void supprimerMaterielDefectueuxAgence(Agence agence)
+	public void supprimerMaterielDefectueuxAgence()
 	{
 		
 	}
