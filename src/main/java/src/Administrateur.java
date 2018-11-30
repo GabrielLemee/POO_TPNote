@@ -19,8 +19,11 @@ public class Administrateur extends Employe{
 	
 	public boolean recupererMateriel(Empruntable materiel, Emprunteur emprunteur)
 	{
-		//TODO
-		return true;
+		if(emprunteur.perdreMateriel(materiel))
+		{
+			return stock.add(materiel);
+		}
+		return false;
 	}
 	
 	
@@ -56,26 +59,56 @@ public class Administrateur extends Employe{
 	
 	public void transfererMateriel(Emprunteur actuelEmprunteur, Empruntable materiel, Emprunteur nvEmprunteur)
 	{
-		
+		if(!materiel.isLimitationPretAuxAgences())
+		{
+			if(actuelEmprunteur.perdreMateriel(materiel))
+			{
+				nvEmprunteur.stock.add(materiel);
+			}
+		}
 	}
 	
 	public void supprimerMateriel(Empruntable materiel)
 	{
-		
+		entreprise.stock.remove(materiel);
+		for(Agence agence : entreprise.getAgences())
+		{
+			agence.stock.remove(materiel);
+			for(Employe employe : agence.getEmployes())
+			{
+				employe.stock.remove(materiel);
+			}
+		}
 	}
 	
 	public void supprimerMaterielDefectueuxEntreprise()
 	{
-		
+		supprimerMaterielDefectueuxDe(entreprise);
+		for(Agence agence : entreprise.getAgences())
+		{
+			supprimerMaterielDefectueuxDe(agence);
+		}
 	}
 	
 	public void supprimerMaterielDefectueuxAgence()
 	{
-		
+		supprimerMaterielDefectueuxDe(agence);
+		for(Employe employe : agence.getEmployes())
+		{
+			supprimerMaterielDefectueuxDe(employe);
+		}
 	}
 	
 	private void supprimerMaterielDefectueuxDe(Emprunteur emprunteur)
 	{
-		
+		List<Empruntable> defectueux = new ArrayList<Empruntable>();
+		for(Empruntable materiel : emprunteur.listeMateriel())
+		{
+			if(materiel.isDefectueux())
+			{
+				defectueux.add(materiel);
+			}
+		}
+		emprunteur.listeMateriel().removeAll(defectueux);
 	}
 }
